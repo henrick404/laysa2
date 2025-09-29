@@ -3,57 +3,653 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profissão Ideal - Descubra sua Carreira</title>
-    <link rel="stylesheet" href="laysa2.css">
+    <title>Descubra sua Profissão Ideal</title>
+    <style>
+        :root {
+            --tecnologia: #3498db;
+            --saude: #e74c3c;
+            --pedagogia: #9b59b6;
+            --artistico: #f1c40f;
+            --educacao-fisica: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+        }
+        
+        .profile-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-item {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .profile-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .profile-value {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .profile-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .tecnologia-fill { background-color: var(--tecnologia); }
+        .saude-fill { background-color: var(--saude); }
+        .pedagogia-fill { background-color: var(--pedagogia); }
+        .artistico-fill { background-color: var(--artistico); }
+        .educacao-fisica-fill { background-color: var(--educacao-fisica); }
+        
+        .question-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 600px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        #prev-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        #prev-btn:hover {
+            background-color: #7f8c8d;
+        }
+        
+        #next-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #next-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        #submit-btn {
+            background-color: #2ecc71;
+            color: white;
+            display: none;
+        }
+        
+        #submit-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .result-container {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .result-description {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .restart-btn {
+            background-color: #9b59b6;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .restart-btn:hover {
+            background-color: #8e44ad;
+        }
+        
+        .profession-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid;
+        }
+        
+        .profession-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .profession-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .tecnologia-card { border-left-color: var(--tecnologia); }
+        .saude-card { border-left-color: var(--saude); }
+        .pedagogia-card { border-left-color: var(--pedagogia); }
+        .artistico-card { border-left-color: var(--artistico); }
+        .educacao-fisica-card { border-left-color: var(--educacao-fisica); }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Descubra sua Profissão Ideal</h1>
-        <p>Responda às perguntas e encontre a carreira que combina com você</p>
-    </header>
-    
     <div class="container">
-        <div class="profile-container">
-            <div class="profile-header">
-                <div class="profile-title">Seu Perfil Profissional</div>
-                <div class="completion">0% completo</div>
+        <header>
+            <h1>Descubra sua Profissão Ideal</h1>
+            <p class="subtitle">Responda às perguntas e descubra qual área combina mais com você</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="profile-bar">
+            <div class="profile-item">
+                <div class="profile-label">Tecnologia</div>
+                <div class="profile-value">
+                    <div class="profile-fill tecnologia-fill" id="tecnologia-bar"></div>
+                </div>
+                <div class="profile-percent" id="tecnologia-percent">0%</div>
             </div>
-            <div class="profile-bar">
-                <div class="profile-progress" id="progress-bar"></div>
+            <div class="profile-item">
+                <div class="profile-label">Saúde</div>
+                <div class="profile-value">
+                    <div class="profile-fill saude-fill" id="saude-bar"></div>
+                </div>
+                <div class="profile-percent" id="saude-percent">0%</div>
             </div>
-            <div class="profile-attributes">
-                <div class="attribute">
-                    <div class="attribute-name">Criatividade</div>
-                    <div class="attribute-value" id="creativity">0%</div>
+            <div class="profile-item">
+                <div class="profile-label">Pedagogia</div>
+                <div class="profile-value">
+                    <div class="profile-fill pedagogia-fill" id="pedagogia-bar"></div>
                 </div>
-                <div class="attribute">
-                    <div class="attribute-name">Liderança</div>
-                    <div class="attribute-value" id="leadership">0%</div>
+                <div class="profile-percent" id="pedagogia-percent">0%</div>
+            </div>
+            <div class="profile-item">
+                <div class="profile-label">Artístico</div>
+                <div class="profile-value">
+                    <div class="profile-fill artistico-fill" id="artistico-bar"></div>
                 </div>
-                <div class="attribute">
-                    <div class="attribute-name">Análise</div>
-                    <div class="attribute-value" id="analysis">0%</div>
+                <div class="profile-percent" id="artistico-percent">0%</div>
+            </div>
+            <div class="profile-item">
+                <div class="profile-label">Educação Física</div>
+                <div class="profile-value">
+                    <div class="profile-fill educacao-fisica-fill" id="educacao-fisica-bar"></div>
                 </div>
-                <div class="attribute">
-                    <div class="attribute-name">Comunicação</div>
-                    <div class="attribute-value" id="communication">0%</div>
-                </div>
+                <div class="profile-percent" id="educacao-fisica-percent">0%</div>
             </div>
         </div>
         
-        <div class="quiz-container" id="quiz-container">
-            <!-- As perguntas serão inseridas aqui via JavaScript -->
+        <div class="question-container" id="question-container">
+            <div class="question-text" id="question-text"></div>
+            <div class="options-container" id="options-container"></div>
+            <div class="navigation">
+                <button id="prev-btn">Anterior</button>
+                <button id="next-btn">Próxima</button>
+                <button id="submit-btn">Ver Resultado</button>
+            </div>
         </div>
         
-        <div class="results hidden" id="results-container">
-            <h2>Resultados da Análise</h2>
-            <p>Com base nas suas respostas, estas são as profissões que podem combinar com você:</p>
-            <div id="profession-results">
-                <!-- Os resultados serão inseridos aqui via JavaScript -->
-            </div>
-            <button id="restart-btn" class="btn-next">Refazer o Teste</button>
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">Sua Profissão Ideal</h2>
+            <p class="result-description">Com base nas suas respostas, estas são as áreas que mais combinam com seu perfil:</p>
+            <div id="profession-results"></div>
+            <button class="restart-btn" id="restart-btn">Fazer Teste Novamente</button>
         </div>
     </div>
-    <script src="laysa2.js"></script>
+
+    <script>
+        // Dados das perguntas e opções
+        const questions = [
+            {
+                text: "Como você prefere passar seu tempo livre?",
+                options: [
+                    { text: "Criando coisas novas (desenhos, músicas, projetos)", areas: { artistico: 3, tecnologia: 1 } },
+                    { text: "Ajudando outras pessoas", areas: { saude: 3, pedagogia: 2 } },
+                    { text: "Resolvendo problemas complexos", areas: { tecnologia: 3 } },
+                    { text: "Praticando esportes ou atividades físicas", areas: { educacao_fisica: 3 } }
+                ]
+            },
+            {
+                text: "Qual dessas atividades você mais gosta?",
+                options: [
+                    { text: "Ensinar ou explicar coisas para os outros", areas: { pedagogia: 3 } },
+                    { text: "Trabalhar com computadores e tecnologia", areas: { tecnologia: 3 } },
+                    { text: "Cuidar da saúde das pessoas", areas: { saude: 3 } },
+                    { text: "Expressar-se através de arte", areas: { artistico: 3 } }
+                ]
+            },
+            {
+                text: "Como você lida com desafios?",
+                options: [
+                    { text: "Analisando sistematicamente e encontrando soluções", areas: { tecnologia: 3, saude: 1 } },
+                    { text: "Usando criatividade e pensamento inovador", areas: { artistico: 3, tecnologia: 1 } },
+                    { text: "Colaborando com outras pessoas", areas: { pedagogia: 2, educacao_fisica: 1 } },
+                    { text: "Com perseverança e atividade física", areas: { educacao_fisica: 3 } }
+                ]
+            },
+            {
+                text: "Qual ambiente de trabalho você prefere?",
+                options: [
+                    { text: "Ambiente dinâmico e em movimento", areas: { educacao_fisica: 3, saude: 1 } },
+                    { text: "Ambiente criativo e inspirador", areas: { artistico: 3 } },
+                    { text: "Ambiente estruturado e organizado", areas: { tecnologia: 2, pedagogia: 1 } },
+                    { text: "Ambiente de ajuda e cuidado", areas: { saude: 3, pedagogia: 2 } }
+                ]
+            },
+            {
+                text: "Qual é sua maior motivação no trabalho?",
+                options: [
+                    { text: "Resolver problemas complexos", areas: { tecnologia: 3 } },
+                    { text: "Ajudar e cuidar de pessoas", areas: { saude: 3, pedagogia: 2 } },
+                    { text: "Expressar criatividade e inovação", areas: { artistico: 3 } },
+                    { text: "Promover saúde e bem-estar", areas: { educacao_fisica: 3, saude: 1 } }
+                ]
+            },
+            {
+                text: "Como você se descreveria?",
+                options: [
+                    { text: "Analítico e lógico", areas: { tecnologia: 3 } },
+                    { text: "Empático e cuidadoso", areas: { saude: 3, pedagogia: 2 } },
+                    { text: "Criativo e expressivo", areas: { artistico: 3 } },
+                    { text: "Ativo e energético", areas: { educacao_fisica: 3 } }
+                ]
+            }
+        ];
+
+        // Informações sobre as profissões
+        const professions = {
+            tecnologia: {
+                title: "Tecnologia",
+                description: "Profissionais de tecnologia trabalham com desenvolvimento de software, análise de sistemas, ciência de dados, segurança da informação e outras áreas relacionadas à computação e inovação tecnológica.",
+                examples: "Desenvolvedor, Cientista de Dados, Analista de Sistemas, Especialista em Cybersecurity"
+            },
+            saude: {
+                title: "Saúde",
+                description: "Profissionais da área da saúde dedicam-se ao cuidado e bem-estar das pessoas, atuando na prevenção, diagnóstico e tratamento de doenças.",
+                examples: "Médico, Enfermeiro, Fisioterapeuta, Nutricionista, Psicólogo"
+            },
+            pedagogia: {
+                title: "Pedagogia",
+                description: "Profissionais da pedagogia atuam na educação, planejamento e gestão de processos educativos, contribuindo para o desenvolvimento de crianças, jovens e adultos.",
+                examples: "Professor, Pedagogo, Coordenador Pedagógico, Orientador Educacional"
+            },
+            artistico: {
+                title: "Artístico",
+                description: "Profissionais da área artística expressam criatividade através de diversas formas de arte, como música, teatro, dança, artes visuais e design.",
+                examples: "Artista Plástico, Designer, Músico, Ator, Diretor de Arte"
+            },
+            educacao_fisica: {
+                title: "Educação Física",
+                description: "Profissionais de educação física promovem saúde e bem-estar através de atividades físicas, esportes e exercícios, atuando em escolas, academias e clubes.",
+                examples: "Professor de Educação Física, Personal Trainer, Preparador Físico, Treinador Esportivo"
+            }
+        };
+
+        // Estado da aplicação
+        let currentQuestion = 0;
+        let selectedOptions = Array(questions.length).fill(null);
+        let areaScores = {
+            tecnologia: 0,
+            saude: 0,
+            pedagogia: 0,
+            artistico: 0,
+            educacao_fisica: 0
+        };
+
+        // Elementos DOM
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const professionResults = document.getElementById('profession-results');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Barras de perfil
+        const tecnologiaBar = document.getElementById('tecnologia-bar');
+        const saudeBar = document.getElementById('saude-bar');
+        const pedagogiaBar = document.getElementById('pedagogia-bar');
+        const artisticoBar = document.getElementById('artistico-bar');
+        const educacaoFisicaBar = document.getElementById('educacao-fisica-bar');
+
+        // Percentuais
+        const tecnologiaPercent = document.getElementById('tecnologia-percent');
+        const saudePercent = document.getElementById('saude-percent');
+        const pedagogiaPercent = document.getElementById('pedagogia-percent');
+        const artisticoPercent = document.getElementById('artistico-percent');
+        const educacaoFisicaPercent = document.getElementById('educacao-fisica-percent');
+
+        // Inicializar a aplicação
+        function init() {
+            showQuestion(currentQuestion);
+            updateNavigation();
+            updateProgressBar();
+            
+            // Event listeners
+            prevBtn.addEventListener('click', goToPrevQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            submitBtn.addEventListener('click', showResults);
+            restartBtn.addEventListener('click', restartQuiz);
+        }
+
+        // Mostrar pergunta atual
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = question.text;
+            
+            // Limpar opções anteriores
+            optionsContainer.innerHTML = '';
+            
+            // Adicionar novas opções
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (selectedOptions[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option.text;
+                optionElement.addEventListener('click', () => selectOption(index, optionIndex));
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        // Selecionar uma opção
+        function selectOption(questionIndex, optionIndex) {
+            selectedOptions[questionIndex] = optionIndex;
+            showQuestion(currentQuestion);
+            updateAreaScores();
+            updateProfileBars();
+            updateNavigation();
+        }
+
+        // Atualizar pontuações das áreas
+        function updateAreaScores() {
+            // Resetar pontuações
+            for (let area in areaScores) {
+                areaScores[area] = 0;
+            }
+            
+            // Calcular novas pontuações
+            selectedOptions.forEach((optionIndex, questionIndex) => {
+                if (optionIndex !== null) {
+                    const option = questions[questionIndex].options[optionIndex];
+                    for (let area in option.areas) {
+                        areaScores[area] += option.areas[area];
+                    }
+                }
+            });
+        }
+
+        // Atualizar barras de perfil
+        function updateProfileBars() {
+            const totalScore = Object.values(areaScores).reduce((a, b) => a + b, 0);
+            
+            if (totalScore === 0) {
+                // Se não há pontuação, definir todas como 0%
+                tecnologiaBar.style.width = '0%';
+                saudeBar.style.width = '0%';
+                pedagogiaBar.style.width = '0%';
+                artisticoBar.style.width = '0%';
+                educacaoFisicaBar.style.width = '0%';
+                
+                tecnologiaPercent.textContent = '0%';
+                saudePercent.textContent = '0%';
+                pedagogiaPercent.textContent = '0%';
+                artisticoPercent.textContent = '0%';
+                educacaoFisicaPercent.textContent = '0%';
+                return;
+            }
+            
+            // Calcular percentuais
+            const tecnologiaPercentValue = Math.round((areaScores.tecnologia / totalScore) * 100);
+            const saudePercentValue = Math.round((areaScores.saude / totalScore) * 100);
+            const pedagogiaPercentValue = Math.round((areaScores.pedagogia / totalScore) * 100);
+            const artisticoPercentValue = Math.round((areaScores.artistico / totalScore) * 100);
+            const educacaoFisicaPercentValue = Math.round((areaScores.educacao_fisica / totalScore) * 100);
+            
+            // Atualizar barras
+            tecnologiaBar.style.width = `${tecnologiaPercentValue}%`;
+            saudeBar.style.width = `${saudePercentValue}%`;
+            pedagogiaBar.style.width = `${pedagogiaPercentValue}%`;
+            artisticoBar.style.width = `${artisticoPercentValue}%`;
+            educacaoFisicaBar.style.width = `${educacaoFisicaPercentValue}%`;
+            
+            // Atualizar percentuais
+            tecnologiaPercent.textContent = `${tecnologiaPercentValue}%`;
+            saudePercent.textContent = `${saudePercentValue}%`;
+            pedagogiaPercent.textContent = `${pedagogiaPercentValue}%`;
+            artisticoPercent.textContent = `${artisticoPercentValue}%`;
+            educacaoFisicaPercent.textContent = `${educacaoFisicaPercentValue}%`;
+        }
+
+        // Atualizar barra de progresso
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Atualizar navegação
+        function updateNavigation() {
+            prevBtn.style.display = currentQuestion === 0 ? 'none' : 'block';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Ir para a próxima pergunta
+        function goToNextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateProgressBar();
+                updateNavigation();
+            }
+        }
+
+        // Ir para a pergunta anterior
+        function goToPrevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateProgressBar();
+                updateNavigation();
+            }
+        }
+
+        // Mostrar resultados
+        function showResults() {
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            // Ordenar áreas por pontuação
+            const sortedAreas = Object.entries(areaScores)
+                .sort((a, b) => b[1] - a[1])
+                .filter(entry => entry[1] > 0);
+            
+            // Limpar resultados anteriores
+            professionResults.innerHTML = '';
+            
+            if (sortedAreas.length === 0) {
+                professionResults.innerHTML = '<p>Responda a todas as perguntas para ver seus resultados.</p>';
+                return;
+            }
+            
+            // Mostrar as 3 principais áreas
+            const topAreas = sortedAreas.slice(0, 3);
+            
+            topAreas.forEach(([area, score]) => {
+                const profession = professions[area];
+                const card = document.createElement('div');
+                card.className = `profession-card ${area}-card`;
+                
+                card.innerHTML = `
+                    <h3 class="profession-title">${profession.title}</h3>
+                    <p class="profession-desc">${profession.description}</p>
+                    <p><strong>Exemplos de carreiras:</strong> ${profession.examples}</p>
+                `;
+                
+                professionResults.appendChild(card);
+            });
+        }
+
+        // Reiniciar o quiz
+        function restartQuiz() {
+            currentQuestion = 0;
+            selectedOptions = Array(questions.length).fill(null);
+            areaScores = {
+                tecnologia: 0,
+                saude: 0,
+                pedagogia: 0,
+                artistico: 0,
+                educacao_fisica: 0
+            };
+            
+            questionContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            
+            showQuestion(currentQuestion);
+            updateAreaScores();
+            updateProfileBars();
+            updateProgressBar();
+            updateNavigation();
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
